@@ -53,7 +53,14 @@ async def main():
 
         print(f"Assistant: {result.output}\n")
 
+async def run_agent(prompt: str) -> str:
+    """
+    Ejecuta el agente IA con un prompt y retorna solo el texto de salida.
+    """
+    result = await agent.run(prompt)
+    return result.output
 
 if __name__ == "__main__":
     import asyncio
     asyncio.run(main())
+
