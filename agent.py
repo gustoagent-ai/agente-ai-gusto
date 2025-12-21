@@ -4,6 +4,7 @@ from pydantic_ai import Agent, ModelSettings
 from pydantic_ai.models.openai import OpenAIChatModel
 from prompt import SYSTEM_PROMPT
 from observability import setup_observability
+from knowledge_base import MENU_INFO
 
 load_dotenv()
 setup_observability()
@@ -27,9 +28,13 @@ agent = Agent(
 
 
 @agent.tool_plain
-def add_numbers(a: float, b: float) -> float:
-    """Add two numbers together and return the result."""
-    return a + b
+def needs_menu_info(user_input: str) -> bool:
+    keywords = [
+        "menu", "menú", "informacion", "información", "precio", "plan", "semana",
+        "mensual", "comidas", "despacho", "zona", "pagar", "transferencia"
+    ]
+    user_input = user_input.lower()
+    return any(word in user_input for word in keywords)
 
 
 async def main():
@@ -63,4 +68,5 @@ async def run_agent(prompt: str) -> str:
 if __name__ == "__main__":
     import asyncio
     asyncio.run(main())
+
 
